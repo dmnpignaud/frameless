@@ -29,7 +29,9 @@ object TypedExpressionEncoder {
     val (out, toRowExpressions) = encoder.toCatalyst(in) match {
       case If(_, _, x: CreateNamedStruct) =>
         val out = BoundReference(0, encoder.catalystRepr, encoder.nullable)
-
+        (out, x.flatten)
+     case x: CreateNamedStruct =>
+        val out = BoundReference(0, encoder.catalystRepr, encoder.nullable)
         (out, x.flatten)
       case other =>
         val out = GetColumnByOrdinal(0, encoder.catalystRepr)

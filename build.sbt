@@ -163,9 +163,9 @@ lazy val publishSettings = Seq(
   publishTo := {
     val nexus = "https://oss.sonatype.org/"
     if (isSnapshot.value)
-      Some("snapshots" at nexus + "content/repositories/snapshots")
+      Some("snapshots" at "s3://s3-eu-west-1.amazonaws.com/lf-maven-repo/snapshots")
     else
-      Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+      Some("releases"  at "s3://s3-eu-west-1.amazonaws.com/lf-maven-repo/releases")
   },
   publishArtifact in Test := false,
   pomIncludeRepository := Function.const(false),
@@ -216,13 +216,13 @@ lazy val noPublishSettings = Seq(
   publishArtifact := false
 )
 
-lazy val credentialSettings = Seq(
+/*lazy val credentialSettings = Seq(
   // For Travis CI - see http://www.cakesolutions.net/teamblogs/publishing-artefacts-to-oss-sonatype-nexus-using-sbt-and-travis-ci
   credentials ++= (for {
     username <- Option(System.getenv().get("SONATYPE_USERNAME"))
     password <- Option(System.getenv().get("SONATYPE_PASSWORD"))
   } yield Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", username, password)).toSeq
-)
+)*/
 
 copyReadme := copyReadmeImpl.value
 lazy val copyReadme = taskKey[Unit]("copy for website generation")
